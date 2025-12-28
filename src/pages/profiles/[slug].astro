@@ -1,12 +1,12 @@
 ---
 import { getCollection, render } from "astro:content";
+import { Badge } from "@/components/ui/8bit/badge";
 import {
 	Card,
 	CardContent,
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/8bit/card";
-import { Badge } from "@/components/ui/8bit/badge";
 import Layout from "@/layouts/main.astro";
 
 export async function getStaticPaths() {
@@ -28,7 +28,9 @@ const content = {
 ---
 
 <Layout {content}>
-	<main class="min-h-screen bg-gradient-to-br from-primary/5 via-background to-accent/5">
+	<main
+		class="min-h-screen bg-gradient-to-br from-primary/5 via-background to-accent/5"
+	>
 		<div class="container mx-auto px-4 py-12 max-w-5xl">
 			<a
 				href="/profiles"
@@ -46,7 +48,7 @@ const content = {
 								alt={name}
 								class="pixel-art w-full h-auto rounded-lg mb-4"
 								loading="eager"
-							/>
+							>
 
 							<h1 class="retro text-2xl mb-4 text-center text-primary">
 								{name}
@@ -91,7 +93,7 @@ const content = {
 							<p class="text-muted-foreground mb-6">{lore}</p>
 
 							<div class="prose prose-sm max-w-none">
-								<Content />
+								<Content/>
 							</div>
 						</CardContent>
 					</Card>

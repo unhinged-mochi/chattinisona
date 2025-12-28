@@ -7,8 +7,12 @@ const allProfiles = await getCollection("profiles");
 
 // Sort: featured first, then by order
 const sortedProfiles = allProfiles.sort((a, b) => {
-	if (a.data.featured && !b.data.featured) return -1;
-	if (!a.data.featured && b.data.featured) return 1;
+	if (a.data.featured && !b.data.featured) {
+		return -1;
+	}
+	if (!a.data.featured && b.data.featured) {
+		return 1;
+	}
 	return (a.data.order || 0) - (b.data.order || 0);
 });
 
@@ -18,14 +22,17 @@ const content = {
 ---
 
 <Layout {content}>
-	<main class="min-h-screen bg-gradient-to-br from-primary/5 via-background to-accent/5">
+	<main
+		class="min-h-screen bg-gradient-to-br from-primary/5 via-background to-accent/5"
+	>
 		<div class="container mx-auto px-4 py-12 max-w-7xl">
 			<header class="text-center mb-16">
 				<h1 class="retro text-3xl md:text-4xl mb-6 text-primary">
 					Meet the Chattini
 				</h1>
 				<p class="text-lg text-muted-foreground max-w-2xl mx-auto">
-					Discover the vibrant personalities that make up our amazing fan community!
+					Discover the vibrant personalities that make up our amazing fan
+					community!
 				</p>
 			</header>
 
