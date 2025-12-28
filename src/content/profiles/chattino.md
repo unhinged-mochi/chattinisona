@@ -1,14 +1,27 @@
 ---
 name: "Chattino"
-lore: "The legendary founder of the Chattini. A wise and cheerful bean who guides all fans on their journey through the community."
+lore: "In the ancient digital forests of the 8-bit realm, the Chattini first emerged from a glitched pixel in the world tree. Legends say they are the guardians of forgotten save files and lost memories."
 image: "chattino.jpeg"
-tags: ["Mascot", "Founder", "Legend"]
-category: "Main Character"
+tags: ["Mascot", "Founder", "Legend", "Mischievous", "Loyal", "Mystical"]
+category: "Spirit"
 featured: true
 order: 1
+subtitle: "The 8-bit Spirit of Joy"
+class: "Spirit Rogue"
+origin: "Pixel Forest"
+inventory:
+  - name: "Shiny Pebble"
+    icon: "Gem"
+  - name: "Old Key"
+    icon: "Key"
+  - name: "Mystic Berry"
+    icon: "Sparkles"
 stats:
   level: 99
   type: "Support"
+  cuteness: 100
+  mischief: 85
+  magic: 92
 ---
 
 # About Chattino

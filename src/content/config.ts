@@ -11,10 +11,27 @@ const profiles = defineCollection({
 		category: z.string().optional(),
 		featured: z.boolean().optional().default(false),
 		order: z.number().optional().default(0),
+		// NEW FIELDS (all optional for backward compatibility):
+		subtitle: z.string().optional(),
+		class: z.string().optional(),
+		origin: z.string().optional(),
+		inventory: z
+			.array(
+				z.object({
+					name: z.string(),
+					icon: z.string(),
+				})
+			)
+			.optional()
+			.default([]),
 		stats: z
 			.object({
 				level: z.number().optional(),
 				type: z.string().optional(),
+				// NEW STAT FIELDS:
+				cuteness: z.number().optional(),
+				mischief: z.number().optional(),
+				magic: z.number().optional(),
 			})
 			.optional(),
 	}),

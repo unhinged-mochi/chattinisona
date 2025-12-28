@@ -136,6 +136,77 @@
 	.stat-bar {
 		animation: bar-fill 1s ease-out forwards;
 	}
+
+	/* Dotted background pattern */
+	.bg-dots {
+		background-image: radial-gradient(
+			hsl(var(--primary) / 0.4) 2px,
+			transparent 2px
+		);
+		background-size: 24px 24px;
+	}
+
+	/* Pixel underline effect for headings */
+	.pixel-underline {
+		background-image: linear-gradient(
+			to right,
+			hsl(var(--primary)) 50%,
+			transparent 50%
+		);
+		background-position: bottom;
+		background-size: 12px 4px;
+		background-repeat: repeat-x;
+		padding-bottom: 4px;
+	}
+
+	/* Grid overlay for lore section */
+	.grid-overlay {
+		background-image:
+			linear-gradient(hsl(var(--primary) / 0.1) 1px, transparent 1px),
+			linear-gradient(90deg, hsl(var(--primary) / 0.1) 1px, transparent 1px);
+		background-size: 20px 20px;
+	}
+
+	/* Pink arrow bullets for lore paragraphs */
+	.lore-text p::before {
+		content: ">";
+		color: hsl(var(--accent));
+		font-weight: bold;
+		margin-right: 0.5em;
+	}
+
+	/* Custom scrollbar styling */
+	.pixel-scroll::-webkit-scrollbar {
+		width: 16px;
+	}
+
+	.pixel-scroll::-webkit-scrollbar-track {
+		background: hsl(var(--secondary));
+		border-left: 4px solid hsl(var(--foreground));
+	}
+
+	.pixel-scroll::-webkit-scrollbar-thumb {
+		background: hsl(var(--accent));
+		border: 2px solid hsl(var(--foreground));
+		box-shadow: inset -2px -2px 0px rgba(0, 0, 0, 0.2);
+	}
+
+	/* Firefox scrollbar fallback */
+	.pixel-scroll {
+		scrollbar-width: thin;
+		scrollbar-color: hsl(var(--accent)) hsl(var(--secondary));
+	}
+
+	/* Diagonal stripe pattern for footer */
+	.diagonal-stripes {
+		background-image: repeating-linear-gradient(
+			45deg,
+			transparent,
+			transparent 2px,
+			rgba(0, 0, 0, 0.1) 2px,
+			rgba(0, 0, 0, 0.1) 8px
+		);
+	}
 }
 
 @theme inline {

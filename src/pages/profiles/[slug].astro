@@ -1,14 +1,19 @@
 ---
 import { getCollection, render } from "astro:content";
-import { Badge } from "@/components/ui/8bit/badge";
+import { Gamepad2, Heart, Sparkles, User } from "lucide-react";
 import {
 	Card,
 	CardContent,
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/8bit/card";
+import { CornerDecorations } from "@/components/ui/8bit/corner-decorations";
+import { InventoryList } from "@/components/ui/8bit/inventory-list";
+import { PixelFooter } from "@/components/ui/8bit/pixel-footer";
+import { PixelScrollArea } from "@/components/ui/8bit/pixel-scroll-area";
 import { Progress } from "@/components/ui/8bit/progress";
 import { Separator } from "@/components/ui/8bit/separator";
+import { ThemeToggle } from "@/components/ui/8bit/theme-toggle";
 import Layout from "@/layouts/main.astro";
 
 export async function getStaticPaths() {
@@ -21,7 +26,16 @@ export async function getStaticPaths() {
 
 const { profile } = Astro.props;
 const { Content } = await render(profile);
-const { name, lore, image, tags, category, stats } = profile.data;
+const {
+	name,
+	lore,
+	image,
+	subtitle,
+	class: characterClass,
+	origin,
+	inventory,
+	stats,
+} = profile.data;
 const imageSrc = `/images/profiles/${image}`;
 
 const content = {
@@ -30,192 +44,225 @@ const content = {
 ---
 
 <Layout {content}>
-	<main
-		class="min-h-screen bg-gradient-to-br from-primary/5 via-background to-accent/5 crt-scanlines"
-		transition:animate="slide"
-	>
-		<div class="container mx-auto px-4 py-12 max-w-6xl">
-			{/* Retro back button */}
-			<a
-				href="/profiles"
-				class="inline-flex items-center gap-2 mb-8 px-4 py-2 border-2 border-foreground dark:border-ring bg-background hover:bg-primary hover:text-primary-foreground transition-all retro text-xs retro-shadow hover:shadow-lg"
-				data-astro-prefetch
+	<main class="min-h-screen bg-dots relative" transition:animate="slide">
+		<div class="max-w-5xl mx-auto relative">
+			{/* Main container with corner decorations */}
+			<div
+				class="bg-white dark:bg-slate-900 border-4 border-foreground shadow-[4px_4px_0px_0px_hsl(var(--foreground))] dark:shadow-[4px_4px_0px_0px_rgba(0,0,0,0.5)] relative overflow-hidden"
 			>
-				◄ BACK TO LIST
-			</a>
+				<CornerDecorations/>
 
-			{/* Character sheet layout */}
-			<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-				{/* Left sidebar: Character portrait & quick stats */}
-				<div class="lg:col-span-1 space-y-6">
-					{/* Portrait card */}
-					<Card transition:name={`profile-${profile.id}`}>
-						<CardContent class="p-0">
-							<div class="relative">
-								{/* Character image */}
+				{/* Header Section */}
+				<header
+					class="flex flex-col md:flex-row justify-between items-start p-8 md:p-10 gap-8 relative z-10 bg-gradient-to-b from-blue-50 to-transparent dark:from-slate-800 dark:to-transparent"
+				>
+					{/* Left: Identity and subtitle */}
+					<div class="flex-1 space-y-4 pt-4">
+						<div class="flex items-end gap-3 flex-wrap">
+							<span
+								class="text-primary retro text-lg md:text-xl uppercase tracking-widest drop-shadow-sm"
+							>
+								Identity:
+							</span>
+							<h1
+								class="text-4xl md:text-6xl retro text-slate-900 dark:text-white pixel-underline pb-4 w-full md:w-auto flex-grow tracking-tight"
+							>
+								{name}
+							</h1>
+						</div>
+
+						{subtitle && (
+							<div class="flex items-center gap-3 text-xl md:text-3xl text-blue-800 dark:text-blue-200">
+								<Gamepad2 className="text-accent animate-pulse h-8 w-8" />
+								<p class="font-bold">{subtitle}</p>
+							</div>
+						)}
+					</div>
+
+					{/* Right: Portrait with tilt effect */}
+					<div class="relative group mx-auto md:mx-0">
+						{/* Tilted accent background */}
+						<div
+							class="absolute -inset-2 bg-accent dark:bg-pink-700 border-4 border-foreground transform rotate-2 transition-transform group-hover:rotate-0 shadow-[2px_2px_0px_0px_hsl(var(--foreground))]"
+						/>
+
+						{/* Main portrait frame */}
+						<div
+							class="relative w-48 h-48 md:w-60 md:h-60 bg-blue-100 dark:bg-slate-800 border-4 border-foreground p-2 z-10"
+						>
+							<div
+								class="w-full h-full bg-white dark:bg-slate-900 border-2 border-dashed border-blue-300 flex items-center justify-center overflow-hidden"
+							>
 								<img
 									src={imageSrc}
 									alt={name}
-									class="pixel-art w-full h-auto"
+									class="w-full h-full object-contain pixel-art grayscale group-hover:grayscale-0 transition-all duration-300"
 									loading="eager"
 									transition:name={`profile-img-${profile.id}`}
 								>
+							</div>
 
-								{/* Name overlay */}
+							{/* Decorative icons */}
+							<Sparkles
+								className="absolute -top-5 -left-5 h-10 w-10 text-primary animate-bounce"
+							/>
+							<Heart
+								className="absolute -bottom-4 -right-4 h-8 w-8 text-accent animate-bounce"
+								style={{ animationDelay: "75ms" }}
+							/>
+						</div>
+					</div>
+				</header>
+
+				{/* Content Grid */}
+				<div class="grid grid-cols-1 md:grid-cols-3 gap-8 p-6 md:p-10 pt-2">
+					{/* Lore Data Section (2 columns) */}
+					<section class="md:col-span-2 flex flex-col gap-4">
+						<div class="flex items-center gap-3 mb-1">
+							<div class="h-4 w-4 bg-primary border-2 border-foreground"></div>
+							<h2 class="text-3xl retro text-primary">Lore Data</h2>
+							<div class="h-1 flex-grow bg-blue-200 dark:bg-blue-900 relative">
 								<div
-									class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-background/95 to-transparent p-4"
+									class="absolute top-0 left-0 h-full w-1/3 bg-primary animate-pulse"
+								></div>
+							</div>
+						</div>
+
+						<div
+							class="bg-secondary dark:bg-slate-800 border-4 border-foreground p-1 shadow-[4px_4px_0px_0px_hsl(var(--foreground))] h-full min-h-[400px] relative group"
+						>
+							<div
+								class="bg-white dark:bg-slate-900 border-2 border-primary h-full p-6 relative overflow-hidden"
+							>
+								{/* Grid background overlay */}
+								<div
+									class="absolute inset-0 opacity-10 pointer-events-none grid-overlay"
+								></div>
+
+								{/* Scrollable content */}
+								<PixelScrollArea
+									className="h-[360px] text-xl md:text-2xl leading-loose text-slate-700 dark:text-blue-100 space-y-6 relative z-10 font-medium lore-text"
 								>
-									<h1 class="retro text-xl text-primary text-center mb-2">
-										{name}
-									</h1>
-									{category && (
-										<div class="text-center">
-											<Badge variant="secondary" className="text-xs">
-												{category}
-											</Badge>
+									<p>"{lore}"</p>
+									<div class="prose prose-sm dark:prose-invert max-w-none">
+										<Content/>
+									</div>
+								</PixelScrollArea>
+							</div>
+						</div>
+					</section>
+
+					{/* Stats Panel (1 column) */}
+					<aside class="md:col-span-1 flex flex-col gap-6">
+						<div
+							class="bg-primary border-4 border-foreground p-1 shadow-[4px_4px_0px_0px_hsl(var(--accent))] hover:-translate-y-1 transition-transform"
+						>
+							<div
+								class="bg-background-light dark:bg-slate-800 border-2 border-dashed border-white p-5 flex flex-col gap-5"
+							>
+								{/* Header */}
+								<div
+									class="flex items-center justify-between border-b-4 border-double border-blue-200 pb-2"
+								>
+									<User className="text-accent h-5 w-5"/>
+									<span class="retro text-primary text-lg">STATS</span>
+									<User className="text-accent h-5 w-5"/>
+								</div>
+
+								{/* Class & Origin */}
+								<div class="grid grid-cols-1 gap-4">
+									{characterClass && (
+										<div class="flex flex-col gap-1">
+											<span class="uppercase retro text-xs text-blue-500">Class</span>
+											<div class="bg-white dark:bg-slate-900 border-2 border-foreground p-2 text-xl font-bold text-center shadow-sm">
+												{characterClass}
+											</div>
+										</div>
+									)}
+
+									{origin && (
+										<div class="flex flex-col gap-1">
+											<span class="uppercase retro text-xs text-blue-500">Origin</span>
+											<div class="bg-white dark:bg-slate-900 border-2 border-foreground p-2 text-xl font-bold text-center shadow-sm">
+												{origin}
+											</div>
 										</div>
 									)}
 								</div>
-							</div>
-						</CardContent>
-					</Card>
 
-					{/* Stats card - RPG style */}
-					{stats && (
-					<Card>
-						<CardHeader>
-							<CardTitle className="text-base flex items-center gap-2">
-								<span class="text-accent">⚡</span>STATS
-							</CardTitle>
-						</CardHeader>
-						<CardContent class="space-y-4">
-							{stats.level && (
-									<Progress
-										value={stats.level}
-										max={100}
-										label="LEVEL"
-										variant="primary"
-									/>
+								{/* Progress Bars */}
+								{stats && (
+								<div class="space-y-4 mt-2">
+									{stats.cuteness !== undefined && (
+											<div>
+												<div class="flex justify-between text-lg font-bold mb-1 retro text-xs tracking-wider">
+													<span class="text-slate-600 dark:text-blue-300">CUTENESS</span>
+													<span class="text-accent">{stats.cuteness === 100 ? "MAX" : `${stats.cuteness}%`}</span>
+												</div>
+												<div class="w-full bg-slate-200 dark:bg-slate-700 h-6 border-2 border-foreground relative">
+													<div
+														class="h-full bg-accent animate-pulse shadow-[inset_0_-2px_0_rgba(0,0,0,0.2)]"
+														style={`width: ${stats.cuteness}%`}
+													></div>
+												</div>
+											</div>
+										)}
+
+									{stats.mischief !== undefined && (
+											<div>
+												<div class="flex justify-between text-lg font-bold mb-1 retro text-xs tracking-wider">
+													<span class="text-slate-600 dark:text-blue-300">MISCHIEF</span>
+													<span class="text-primary">{stats.mischief}%</span>
+												</div>
+												<div class="w-full bg-slate-200 dark:bg-slate-700 h-6 border-2 border-foreground relative">
+													<div
+														class="h-full bg-blue-500 shadow-[inset_0_-2px_0_rgba(0,0,0,0.2)]"
+														style={`width: ${stats.mischief}%`}
+													></div>
+												</div>
+											</div>
+										)}
+
+									{stats.magic !== undefined && (
+											<div>
+												<div class="flex justify-between text-lg font-bold mb-1 retro text-xs tracking-wider">
+													<span class="text-slate-600 dark:text-blue-300">MAGIC</span>
+													<span class="text-primary">{stats.magic}%</span>
+												</div>
+												<div class="w-full bg-slate-200 dark:bg-slate-700 h-6 border-2 border-foreground relative">
+													<div
+														class="h-full bg-indigo-500 shadow-[inset_0_-2px_0_rgba(0,0,0,0.2)]"
+														style={`width: ${stats.magic}%`}
+													></div>
+												</div>
+											</div>
+										)}
+								</div>
 								)}
 
-							{stats.type && (
-									<div class="space-y-1">
-										<div class="text-xs retro text-muted-foreground">TYPE</div>
-										<div class="text-sm font-medium">{stats.type}</div>
-									</div>
+								{/* Inventory */}
+								{inventory && inventory.length > 0 && (
+								<div class="mt-2 border-t-4 border-dotted border-blue-200 pt-4">
+									<h3
+										class="retro text-xs text-primary mb-3 uppercase text-center bg-blue-100 dark:bg-slate-700 py-1"
+									>
+										Inventory
+									</h3>
+									<InventoryList items={inventory} client:load/>
+								</div>
 								)}
-
-							{/* Experience bar */}
-							<Progress
-								value={85}
-								max={100}
-								label="EXPERIENCE"
-								variant="accent"
-								showValue={false}
-							/>
-
-							<Separator decorative className="my-4"/>
-
-							<div class="grid grid-cols-2 gap-4 text-center text-xs retro">
-								<div>
-									<div class="text-2xl text-primary">{tags?.length || 0}</div>
-									<div class="text-muted-foreground mt-1">TRAITS</div>
-								</div>
-								<div>
-									<div class="text-2xl text-accent">★</div>
-									<div class="text-muted-foreground mt-1">RANK</div>
-								</div>
 							</div>
-						</CardContent>
-					</Card>
-					)}
-
-					{/* Tags card */}
-					{tags && tags.length > 0 && (
-					<Card>
-						<CardHeader>
-							<CardTitle className="text-base flex items-center gap-2">
-								<span class="text-primary">●</span>TRAITS
-							</CardTitle>
-						</CardHeader>
-						<CardContent>
-							<div class="flex flex-wrap gap-2">
-								{tags.map((tag) => (
-										<Badge variant="outline" className="text-xs">
-											{tag}
-										</Badge>
-									))}
-							</div>
-						</CardContent>
-					</Card>
-					)}
+						</div>
+					</aside>
 				</div>
 
-				{/* Right content: Story & Details */}
-				<div class="lg:col-span-2 space-y-6">
-					{/* Lore/Bio card */}
-					<Card>
-						<CardHeader>
-							<CardTitle className="text-xl flex items-center gap-2">
-								<span class="text-accent">▼</span>PROFILE
-							</CardTitle>
-						</CardHeader>
-						<CardContent class="space-y-6">
-							{/* Short lore */}
-							<div class="p-4 bg-muted/50 border-l-4 border-primary">
-								<p class="text-muted-foreground leading-relaxed italic">
-									"{lore}"
-								</p>
-							</div>
-
-							<Separator decorative/>
-
-							{/* Detailed content */}
-							<div class="prose prose-sm dark:prose-invert max-w-none">
-								<Content/>
-							</div>
-						</CardContent>
-					</Card>
-
-					{/* Achievements card */}
-					<Card>
-						<CardHeader>
-							<CardTitle className="text-base flex items-center gap-2">
-								<span class="text-accent">★</span>ACHIEVEMENTS
-							</CardTitle>
-						</CardHeader>
-						<CardContent>
-							<div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
-								<div
-									class="text-center p-4 border border-border rounded hover:border-primary transition-colors"
-								>
-									<div class="text-3xl mb-2">🏆</div>
-									<div class="retro text-[10px] text-muted-foreground">
-										COMMUNITY HERO
-									</div>
-								</div>
-								<div
-									class="text-center p-4 border border-border rounded hover:border-accent transition-colors"
-								>
-									<div class="text-3xl mb-2">⭐</div>
-									<div class="retro text-[10px] text-muted-foreground">
-										FEATURED
-									</div>
-								</div>
-								<div
-									class="text-center p-4 border border-border rounded hover:border-primary transition-colors"
-								>
-									<div class="text-3xl mb-2">💎</div>
-									<div class="retro text-[10px] text-muted-foreground">
-										LEGEND
-									</div>
-								</div>
-							</div>
-						</CardContent>
-					</Card>
-				</div>
+				{/* Footer */}
+				<PixelFooter/>
 			</div>
 		</div>
+
+		{/* Theme Toggle */}
+		<ThemeToggle client:only="react"/>
 	</main>
 </Layout>
 
