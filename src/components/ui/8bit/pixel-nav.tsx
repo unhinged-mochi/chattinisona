@@ -53,7 +53,7 @@ export default function PixelNav({ current }: PixelNavProps) {
 												? "bg-primary text-primary-foreground shadow-[3px_3px_0px_0px_hsl(var(--foreground))]"
 												: "bg-background shadow-[2px_2px_0px_0px_hsl(var(--foreground))] hover:-translate-y-0.5 hover:bg-secondary hover:shadow-[3px_3px_0px_0px_hsl(var(--foreground))]"
 										)}
-										href="/profiles/1/"
+										href="/profiles"
 									>
 										<Users className="h-4 w-4" />
 										<span className="retro hidden text-xs md:inline">
