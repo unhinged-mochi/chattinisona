@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from "astro:content";
 import { Gamepad2, Heart, Sparkles, User } from "lucide-react";
+import PlayerProfileCard from "@/components/ui/8bit/blocks/player-profile-card";
 import {
 	Card,
 	CardContent,
@@ -10,6 +11,7 @@ import {
 import { CornerDecorations } from "@/components/ui/8bit/corner-decorations";
 import { InventoryList } from "@/components/ui/8bit/inventory-list";
 import { PixelFooter } from "@/components/ui/8bit/pixel-footer";
+import PixelNav from "@/components/ui/8bit/pixel-nav";
 import { PixelScrollArea } from "@/components/ui/8bit/pixel-scroll-area";
 import { Progress } from "@/components/ui/8bit/progress";
 import { Separator } from "@/components/ui/8bit/separator";
@@ -38,13 +40,43 @@ const {
 } = profile.data;
 const imageSrc = `/images/profiles/${image}`;
 
+// Map Chattini stats to PlayerProfileCard customStats format
+const customStats = [
+	{
+		label: "Cuteness",
+		value: stats.cuteness || 0,
+		max: 100,
+		color: "bg-accent",
+		variant: "retro" as const,
+	},
+	{
+		label: "Mischief",
+		value: stats.mischief || 0,
+		max: 100,
+		color: "bg-blue-500",
+		variant: "retro" as const,
+	},
+	{
+		label: "Magic",
+		value: stats.magic || 0,
+		max: 100,
+		color: "bg-indigo-500",
+		variant: "retro" as const,
+	},
+];
+
 const content = {
 	title: `${name} - Chattinisona`,
 };
 ---
 
 <Layout {content}>
-	<main class="min-h-screen bg-dots relative" transition:animate="slide">
+	<PixelNav current="profiles" client:load/>
+
+	<main
+		class="min-h-screen bg-dots relative pt-20 pb-8 px-4"
+		transition:animate="slide"
+	>
 		<div class="max-w-5xl mx-auto relative">
 			{/* Main container with corner decorations */}
 			<div
@@ -154,105 +186,36 @@ const content = {
 
 					{/* Stats Panel (1 column) */}
 					<aside class="md:col-span-1 flex flex-col gap-6">
+						<PlayerProfileCard
+							client:load
+							playerName={name}
+							avatarSrc={imageSrc}
+							level={stats.level}
+							playerClass={stats.type || characterClass}
+							showLevel={true}
+							showHealth={false}
+							showMana={false}
+							showExperience={false}
+							customStats={customStats}
+						/>
+
+						{/* Inventory */}
+						{inventory && inventory.length > 0 && (
 						<div
-							class="bg-primary border-4 border-foreground p-1 shadow-[4px_4px_0px_0px_hsl(var(--accent))] hover:-translate-y-1 transition-transform"
+							class="bg-primary border-4 border-foreground p-1 shadow-[4px_4px_0px_0px_hsl(var(--accent))]"
 						>
 							<div
-								class="bg-background-light dark:bg-slate-800 border-2 border-dashed border-white p-5 flex flex-col gap-5"
+								class="bg-background-light dark:bg-slate-800 border-2 border-dashed border-white p-5"
 							>
-								{/* Header */}
-								<div
-									class="flex items-center justify-between border-b-4 border-double border-blue-200 pb-2"
+								<h3
+									class="retro text-xs text-primary mb-3 uppercase text-center bg-blue-100 dark:bg-slate-700 py-1"
 								>
-									<User className="text-accent h-5 w-5"/>
-									<span class="retro text-primary text-lg">STATS</span>
-									<User className="text-accent h-5 w-5"/>
-								</div>
-
-								{/* Class & Origin */}
-								<div class="grid grid-cols-1 gap-4">
-									{characterClass && (
-										<div class="flex flex-col gap-1">
-											<span class="uppercase retro text-xs text-blue-500">Class</span>
-											<div class="bg-white dark:bg-slate-900 border-2 border-foreground p-2 text-xl font-bold text-center shadow-sm">
-												{characterClass}
-											</div>
-										</div>
-									)}
-
-									{origin && (
-										<div class="flex flex-col gap-1">
-											<span class="uppercase retro text-xs text-blue-500">Origin</span>
-											<div class="bg-white dark:bg-slate-900 border-2 border-foreground p-2 text-xl font-bold text-center shadow-sm">
-												{origin}
-											</div>
-										</div>
-									)}
-								</div>
-
-								{/* Progress Bars */}
-								{stats && (
-								<div class="space-y-4 mt-2">
-									{stats.cuteness !== undefined && (
-											<div>
-												<div class="flex justify-between text-lg font-bold mb-1 retro text-xs tracking-wider">
-													<span class="text-slate-600 dark:text-blue-300">CUTENESS</span>
-													<span class="text-accent">{stats.cuteness === 100 ? "MAX" : `${stats.cuteness}%`}</span>
-												</div>
-												<div class="w-full bg-slate-200 dark:bg-slate-700 h-6 border-2 border-foreground relative">
-													<div
-														class="h-full bg-accent animate-pulse shadow-[inset_0_-2px_0_rgba(0,0,0,0.2)]"
-														style={`width: ${stats.cuteness}%`}
-													></div>
-												</div>
-											</div>
-										)}
-
-									{stats.mischief !== undefined && (
-											<div>
-												<div class="flex justify-between text-lg font-bold mb-1 retro text-xs tracking-wider">
-													<span class="text-slate-600 dark:text-blue-300">MISCHIEF</span>
-													<span class="text-primary">{stats.mischief}%</span>
-												</div>
-												<div class="w-full bg-slate-200 dark:bg-slate-700 h-6 border-2 border-foreground relative">
-													<div
-														class="h-full bg-blue-500 shadow-[inset_0_-2px_0_rgba(0,0,0,0.2)]"
-														style={`width: ${stats.mischief}%`}
-													></div>
-												</div>
-											</div>
-										)}
-
-									{stats.magic !== undefined && (
-											<div>
-												<div class="flex justify-between text-lg font-bold mb-1 retro text-xs tracking-wider">
-													<span class="text-slate-600 dark:text-blue-300">MAGIC</span>
-													<span class="text-primary">{stats.magic}%</span>
-												</div>
-												<div class="w-full bg-slate-200 dark:bg-slate-700 h-6 border-2 border-foreground relative">
-													<div
-														class="h-full bg-indigo-500 shadow-[inset_0_-2px_0_rgba(0,0,0,0.2)]"
-														style={`width: ${stats.magic}%`}
-													></div>
-												</div>
-											</div>
-										)}
-								</div>
-								)}
-
-								{/* Inventory */}
-								{inventory && inventory.length > 0 && (
-								<div class="mt-2 border-t-4 border-dotted border-blue-200 pt-4">
-									<h3
-										class="retro text-xs text-primary mb-3 uppercase text-center bg-blue-100 dark:bg-slate-700 py-1"
-									>
-										Inventory
-									</h3>
-									<InventoryList items={inventory} client:load/>
-								</div>
-								)}
+									Inventory
+								</h3>
+								<InventoryList items={inventory} client:load/>
 							</div>
 						</div>
+						)}
 					</aside>
 				</div>
 

@@ -1,19 +1,5 @@
 ---
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 import { getCollection } from "astro:content";
 import { Star, Zap } from "lucide-react";
 import { Badge } from "@/components/ui/8bit/badge";
@@ -22,20 +8,23 @@ import { PixelFooter } from "@/components/ui/8bit/pixel-footer";
 import PixelNav from "@/components/ui/8bit/pixel-nav";
 import PixelPagination from "@/components/ui/8bit/pixel-pagination";
 import { ThemeToggle } from "@/components/ui/8bit/theme-toggle";
-import MainLayout from "../../layouts/main.astro";
+import MainLayout from "../../../layouts/main.astro";
 
-const allProfiles = await getCollection("profiles");
+export async function getStaticPaths({ paginate }) {
+	const profiles = await getCollection("profiles");
 
-// Sort: featured first, then by order
-const sortedProfiles = allProfiles.sort((a, b) => {
-	if (a.data.featured && !b.data.featured) return -1;
-	if (!a.data.featured && b.data.featured) return 1;
-	return (a.data.order || 999) - (b.data.order || 999);
-});
+	// Sort: featured first, then by order
+	const sortedProfiles = profiles.sort((a, b) => {
+		if (a.data.featured && !b.data.featured) return -1;
+		if (!a.data.featured && b.data.featured) return 1;
+		return (a.data.order || 999) - (b.data.order || 999);
+	});
 
-const PAGE_SIZE = 12;
-const profiles = sortedProfiles.slice(0, PAGE_SIZE);
-const totalPages = Math.ceil(sortedProfiles.length / PAGE_SIZE);
+	return paginate(sortedProfiles, { pageSize: 12 });
+}
+
+const { page } = Astro.props;
+const profiles = page.data;
 ---
 
 <MainLayout content={{ title: "Chattinisona - Profiles" }}>
@@ -43,7 +32,6 @@ const totalPages = Math.ceil(sortedProfiles.length / PAGE_SIZE);
 
 	<main class="min-h-screen bg-dots relative py-8 px-4 pt-24" transition:animate="fade">
 		<div class="max-w-7xl mx-auto">
-			{/* Header */}
 			<header class="text-center mb-12">
 				<div class="inline-block bg-primary border-4 border-foreground p-1 mb-6 shadow-[8px_8px_0px_0px_hsl(var(--foreground))]">
 					<div class="bg-background border-2 border-dashed border-primary px-8 py-4">
@@ -57,7 +45,6 @@ const totalPages = Math.ceil(sortedProfiles.length / PAGE_SIZE);
 				</p>
 			</header>
 
-			{/* Profiles Grid */}
 			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-12">
 				{profiles.map((profile) => {
 					const imageSrc = profile.data.image
@@ -72,7 +59,6 @@ const totalPages = Math.ceil(sortedProfiles.length / PAGE_SIZE);
 						>
 							<Card className="h-full border-4 border-foreground shadow-[4px_4px_0px_0px_hsl(var(--foreground))] hover:shadow-[6px_6px_0px_0px_hsl(var(--accent))] transition-all bg-gradient-to-br from-background to-secondary/20">
 								<CardContent className="p-0">
-									{/* Image Container */}
 									<div class="relative bg-secondary dark:bg-slate-800 border-b-4 border-foreground p-3">
 										{isFeatured && (
 											<div class="absolute top-2 left-2 z-10">
@@ -90,26 +76,21 @@ const totalPages = Math.ceil(sortedProfiles.length / PAGE_SIZE);
 												class="w-full h-full object-cover pixel-art grayscale group-hover:grayscale-0 transition-all duration-300"
 												loading="lazy"
 											/>
-											{/* Scan line effect on hover */}
 											<div class="absolute inset-0 bg-gradient-to-b from-transparent via-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity crt-scanlines pointer-events-none"></div>
 										</div>
 									</div>
 
-									{/* Info Section */}
 									<div class="p-4 space-y-3">
-										{/* Name */}
 										<h2 class="retro text-sm text-primary uppercase text-center line-clamp-1">
 											{profile.data.name}
 										</h2>
 
-										{/* Class */}
 										<div class="bg-primary/10 dark:bg-primary/20 border-2 border-primary/30 p-2 text-center">
 											<p class="text-xs font-bold text-primary uppercase">
 												{profile.data.class}
 											</p>
 										</div>
 
-										{/* Stats */}
 										<div class="flex justify-between items-center text-xs pt-2 border-t-2 border-dotted border-muted">
 											<div class="flex items-center gap-1">
 												<Zap className="w-3 h-3 text-accent" />
@@ -130,25 +111,22 @@ const totalPages = Math.ceil(sortedProfiles.length / PAGE_SIZE);
 				})}
 			</div>
 
-			{/* Pagination */}
-			{totalPages > 1 && (
+			{page.lastPage > 1 && (
 				<div class="flex justify-center mt-8">
 					<PixelPagination
 						client:load
-						currentPage={1}
-						totalPages={totalPages}
+						currentPage={page.currentPage}
+						totalPages={page.lastPage}
 						baseUrl="/profiles/page/"
 					/>
 				</div>
 			)}
 
-			{/* Footer */}
 			<div class="mt-16">
 				<PixelFooter />
 			</div>
 		</div>
 
-		{/* Theme Toggle */}
 		<ThemeToggle client:only="react" />
 	</main>
 </MainLayout>

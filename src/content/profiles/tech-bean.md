@@ -1,38 +1,54 @@
 ---
-name: "Tech Bean"
-lore: "The community's resident tech wizard. If it involves code, bots, or debugging, Tech Bean is your go-to Chattini."
+name: "Mic Muncher"
+lore: "The gourmand Chattini with an insatiable appetite for microphones. Can detect a fresh microphone from three streams away and will stop at nothing to claim it as a tasty snack."
 image: "chattino.jpeg"
-tags: ["Tech", "Coding", "Automation"]
-category: "Tech Support"
+tags: ["Mic Eater", "Gourmand", "Snack Hunter", "Blue Plushie"]
+category: "Gourmand"
 featured: false
 order: 4
+subtitle: "The Microphone Connoisseur"
+class: "Mic Muncher"
+origin: "Raora's Stream Setup"
+inventory:
+  - name: "Half-Eaten Mic"
+    icon: "🎤"
+  - name: "Mic Collection"
+    icon: "📻"
+  - name: "Spare Batteries"
+    icon: "🔋"
 stats:
-  level: 85
-  type: "Engineer"
+  level: 67
+  type: "Hungry Chattini"
+  cuteness: 90
+  mischief: 92
+  magic: 75
 ---
 
-# About Tech Bean
+# About Mic Muncher
 
-While other Chattini are posting memes, Tech Bean is busy making the bots that react to those memes with perfect timing. They're the unsung hero behind many of the community's technical features.
+Mic Muncher is the community's resident microphone enthusiast - though "enthusiast" might be understating things. This adorable blue plushie has developed a peculiar taste for audio equipment, particularly microphones, which they consider the finest delicacy in all of Raora's streaming setup.
 
-## Abilities
+## Signature Moves
 
-- **Code Sorcery**: Can debug anything, anywhere, anytime
-- **Bot Whisperer**: Creates and maintains all community bots
-- **Automation Expert**: "Why do manually what a script can do?"
-- **Stack Overflow**: Knows exactly which Stack Overflow answer to link
+- **Mic Detection**: Can sense a nearby microphone's presence through walls
+- **Swift Consumption**: Devours microphones in record time when unattended
+- **Quality Tasting**: Prefers condenser mics but won't turn down a good dynamic mic
+- **Stealth Approach**: Sneaks up on microphones when Raora isn't looking
 
 ## Background
 
-Tech Bean arrived in the community with a simple mission: make everything run smoother through the power of technology. What started as a few helpful bots evolved into a comprehensive suite of tools that make the Chattini experience seamless for everyone.
+Mic Muncher's love affair with microphones began during one of Raora's earliest streams. What started as innocent curiosity - "I wonder what this tastes like?" - quickly evolved into a full-blown obsession. Despite Raora's best efforts to keep her audio equipment safe, Mic Muncher always finds a way to get just one more bite.
+
+The Chattini community has come to accept and even celebrate Mic Muncher's unique dietary preferences, often leaving out "microphone snacks" during special events (much to Raora's playful exasperation).
 
 ## Personality
 
-Methodical, precise, and always thinking three steps ahead. Tech Bean communicates in a mix of normal speech and code comments. They have infinite patience for technical questions but will absolutely roast you (gently) if you haven't tried turning it off and on again.
+Mic Muncher is food-motivated to the extreme, but only when it comes to microphones. They're otherwise a sweet and gentle Chattini who enjoys napping between meals and sharing microphone appreciation tips with fellow Chattini. Their eyes light up at the mere mention of audio equipment, and they've been known to drool when passing by a music store.
 
 ## Fun Facts
 
-- Favorite programming language: "The one that works"
-- Catchphrase: "Have you checked the logs?"
-- Special talent: Can spot a missing semicolon from across the room
-- Weakness: Merge conflicts (they haunt their dreams)
+- Favorite snack: SM58 microphones (classic taste!)
+- Catchphrase: "Is anyone going to eat that mic?"
+- Special talent: Can identify a microphone brand by taste alone
+- Weakness: Cannot resist the allure of a freshly unboxed microphone
+- Dream: To visit the world's largest microphone factory

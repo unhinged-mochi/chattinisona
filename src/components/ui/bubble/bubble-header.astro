@@ -1,0 +1,76 @@
+---
+import { PawPrint } from "lucide-react";
+---
+
+<header class="bg-white p-1 shadow-lg rounded-lg mb-12 relative z-30">
+	<div
+		class="bg-gradient-to-r from-blue-100/30 to-pink-100/30 px-6 py-4 flex flex-col md:flex-row items-center justify-between gap-4 rounded-lg"
+	>
+		<!-- Logo -->
+		<div class="flex items-center gap-4">
+			<div class="bg-blue-400 text-white p-2 rounded-lg">
+				<PawPrint className="w-6 h-6"/>
+			</div>
+			<h1 class="font-pixel text-lg md:text-xl text-slate-800">
+				Chattini<span class="text-pink-400">sona</span>
+			</h1>
+		</div>
+
+		<!-- Navigation -->
+		<nav
+			class="flex items-center gap-2 md:gap-6 bg-white/60 px-4 py-2 rounded-lg border border-white"
+		>
+			<a
+				href="/"
+				class="font-pixel text-xs text-slate-500 hover:text-blue-400 transition-colors uppercase"
+			>
+				Home
+			</a>
+			<a
+				href="/profiles/1/"
+				class="font-pixel text-xs text-blue-400 hover:text-blue-600 transition-colors uppercase"
+			>
+				Profiles
+			</a>
+			<a
+				href="#"
+				class="font-pixel text-xs text-slate-500 hover:text-pink-400 transition-colors uppercase"
+			>
+				Leaderboard
+			</a>
+		</nav>
+
+		<!-- Social Links -->
+		<div class="flex gap-3">
+			<a href="#" class="text-slate-400 hover:text-blue-400 transition-colors">
+				<span class="font-mono-pixel font-bold text-xl">Tw</span>
+			</a>
+			<a href="#" class="text-slate-400 hover:text-pink-400 transition-colors">
+				<span class="font-mono-pixel font-bold text-xl">Ig</span>
+			</a>
+		</div>
+	</div>
+</header>
+
+<!-- Filter Tabs -->
+<div class="flex justify-between items-center mb-12 px-2 max-w-5xl mx-auto">
+	<h2
+		class="font-pixel text-sm md:text-base text-slate-600 flex items-center gap-2"
+	>
+		<span class="text-2xl">💙</span>
+		Bubble Friends
+	</h2>
+
+	<div class="flex gap-2">
+		<button
+			class="bg-white/80 backdrop-blur-sm px-4 py-2 font-mono-pixel text-slate-500 text-lg hover:text-blue-400 border-2 border-white hover:border-blue-200 transition-all rounded-full shadow-sm hover:shadow-md"
+		>
+			Latest
+		</button>
+		<button
+			class="bg-white/80 backdrop-blur-sm px-4 py-2 font-mono-pixel text-slate-500 text-lg hover:text-pink-400 border-2 border-white hover:border-pink-200 transition-all rounded-full shadow-sm hover:shadow-md"
+		>
+			Popular
+		</button>
+	</div>
+</div>

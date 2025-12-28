@@ -1,5 +1,5 @@
-@import "tailwindcss";
 @import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
+@import "tailwindcss";
 @import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
@@ -206,6 +206,63 @@
 			rgba(0, 0, 0, 0.1) 2px,
 			rgba(0, 0, 0, 0.1) 8px
 		);
+	}
+
+	/* ========================================
+	   BUBBLE THEME STYLES
+	   (For profiles list page only)
+	   ======================================== */
+
+	/* Bubble card base */
+	.bubble-card {
+		border-radius: 50%;
+		position: relative;
+		transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+		backdrop-filter: blur(4px);
+	}
+
+	.bubble-card:hover {
+		transform: scale(1.05) translateY(-5px);
+		z-index: 20;
+		animation-play-state: paused;
+	}
+
+	/* Bubble shine overlay */
+	.bubble-shine {
+		position: absolute;
+		top: 10%;
+		left: 10%;
+		width: 25%;
+		height: 15%;
+		border-radius: 50%;
+		background: linear-gradient(
+			135deg,
+			rgba(255, 255, 255, 0.9) 0%,
+			rgba(255, 255, 255, 0) 100%
+		);
+		transform: rotate(-45deg);
+		pointer-events: none;
+	}
+
+	/* Float animations handled by Motion library */
+
+	/* Dotted background for bubble pages */
+	.bg-bubble-dots {
+		background-color: #f0f9ff;
+		background-image:
+			radial-gradient(#bfdbfe 15%, transparent 16%),
+			radial-gradient(#bfdbfe 15%, transparent 16%);
+		background-size: 20px 20px;
+		background-position:
+			0 0,
+			10px 10px;
+	}
+
+	/* Pixelated image rendering (alias for consistency) */
+	.pixelated {
+		image-rendering: pixelated;
+		image-rendering: -moz-crisp-edges;
+		image-rendering: crisp-edges;
 	}
 }
 

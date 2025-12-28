@@ -1,0 +1,102 @@
+---
+import { getCollection } from "astro:content";
+import ProfileCard from "@/components/profile-card.astro";
+import Layout from "@/layouts/main.astro";
+
+const allProfiles = await getCollection("profiles");
+
+// Sort: featured first, then by order
+const sortedProfiles = allProfiles.sort((a, b) => {
+	if (a.data.featured && !b.data.featured) {
+		return -1;
+	}
+	if (!a.data.featured && b.data.featured) {
+		return 1;
+	}
+	return (a.data.order || 0) - (b.data.order || 0);
+});
+
+const content = {
+	title: "Chattini Profiles - Chattinisona",
+};
+---
+
+<Layout {content}>
+	<main class="min-h-screen bg-dots crt-scanlines" transition:animate="fade">
+		<div class="container mx-auto px-4 py-12 max-w-7xl">
+			<header class="text-center mb-16">
+				{/* Retro title with pixel border */}
+				<div class="inline-block relative mb-6 p-6 retro-shadow">
+					<h1 class="retro text-3xl md:text-5xl text-primary pixel-pulse">
+						► MEET THE CHATTINI ◄
+					</h1>
+					<div class="absolute -bottom-2 left-0 right-0 h-1 bg-accent"/>
+				</div>
+
+				<p
+					class="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed"
+				>
+					<span class="retro text-accent text-xl">█</span>
+					Discover the vibrant personalities that make up our amazing fan
+					community!
+					<span class="retro text-accent text-xl">█</span>
+				</p>
+
+				{/* Stats counter */}
+				<div class="mt-8 flex justify-center gap-8 text-sm retro">
+					<div class="text-center">
+						<div class="text-2xl text-primary">{sortedProfiles.length}</div>
+						<div class="text-muted-foreground">PROFILES</div>
+					</div>
+					<div class="text-center">
+						<div class="text-2xl text-accent">
+							{sortedProfiles.filter(p => p.data.featured).length}
+						</div>
+						<div class="text-muted-foreground">FEATURED</div>
+					</div>
+				</div>
+			</header>
+
+			{/* Staggered card grid */}
+			<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+				{sortedProfiles.map((profile, index) => (
+					<div
+						class="animate-fade-in"
+						style={`animation-delay: ${index * 100}ms`}
+					>
+						<ProfileCard
+							name={profile.data.name}
+							lore={profile.data.lore}
+							image={profile.data.image}
+							imageAlt={profile.data.name}
+							tags={profile.data.tags}
+							category={profile.data.category}
+							slug={profile.id}
+							featured={profile.data.featured}
+							stats={profile.data.stats}
+							subtitle={profile.data.subtitle}
+						/>
+					</div>
+				))}
+			</div>
+		</div>
+	</main>
+</Layout>
+
+<style>
+	@keyframes fade-in {
+		from {
+			opacity: 0;
+			transform: translateY(20px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	.animate-fade-in {
+		opacity: 0;
+		animation: fade-in 0.6s ease-out forwards;
+	}
+</style>

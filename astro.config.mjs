@@ -10,10 +10,16 @@ import { defineConfig } from "astro/config";
 export default defineConfig({
 	output: "static",
 
+	image: {
+		service: {
+			entrypoint: "astro/assets/services/sharp",
+		},
+	},
+
 	vite: {
 		plugins: [tailwindcss()],
 	},
 
 	integrations: [react(), mdx()],
-	adapter: cloudflare(),
+	adapter: cloudflare({ imageService: "compile" }),
 });

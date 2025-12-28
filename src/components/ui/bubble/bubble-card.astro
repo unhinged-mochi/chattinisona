@@ -1,0 +1,27 @@
+---
+import BubbleCard from "./bubble-card";
+
+interface Props {
+	profile: {
+		name: string;
+		image: string;
+		level: number;
+		class: string;
+		favoriteCount?: number;
+		slug: string;
+	};
+	size: "sm" | "md" | "lg" | "xl";
+	floatDelay: 1 | 2 | 3 | 4;
+	colorScheme: "blue" | "pink" | "purple" | "yellow" | "green" | "red";
+}
+
+const { profile, size, floatDelay, colorScheme } = Astro.props;
+---
+
+<BubbleCard
+	client:load
+	profile={profile}
+	size={size}
+	floatDelay={floatDelay}
+	colorScheme={colorScheme}
+/>

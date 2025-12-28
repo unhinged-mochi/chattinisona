@@ -1,5 +1,7 @@
 ---
 import { Button } from "@/components/ui/8bit/button";
+import PixelNav from "@/components/ui/8bit/pixel-nav";
+import { ThemeToggle } from "@/components/ui/8bit/theme-toggle";
 import "../styles/global.css";
 ---
 
@@ -13,18 +15,25 @@ import "../styles/global.css";
 	</head>
 
 	<body class="bg-gradient-to-br from-primary/10 via-background to-accent/10">
-		<div class="grid place-items-center h-screen content-center px-4">
+		<PixelNav current="home" client:load/>
+
+		<div class="grid place-items-center min-h-screen content-center px-4 pt-16">
 			<div class="text-center max-w-2xl">
 				<h1 class="retro text-4xl md:text-5xl mb-8 text-primary">
 					Chattinisona
 				</h1>
-				<p class="text-xl mb-12 text-muted-foreground">
-					Welcome to the Chattini fan community showcase!
+				<p class="text-xl mb-12 text-muted-foreground leading-relaxed">
+					Celebrating the adorable blue plushie mascots of Raora Panthera's
+					community! Join fellow Chattini enthusiasts as we share our love for
+					jetpacks, cucumbers, and everything that makes these little
+					troublemakers special. 🚀🥒🎤
 				</p>
-				<a href="/profiles">
+				<a href="/profiles/1/">
 					<Button size="lg" class="retro text-sm">Meet the Chattini</Button>
 				</a>
 			</div>
 		</div>
+
+		<ThemeToggle client:only="react"/>
 	</body>
 </html>
