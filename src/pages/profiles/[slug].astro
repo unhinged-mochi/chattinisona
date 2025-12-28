@@ -1,0 +1,125 @@
+---
+import { getCollection, render } from "astro:content";
+import {
+	Card,
+	CardContent,
+	CardHeader,
+	CardTitle,
+} from "@/components/ui/8bit/card";
+import { Badge } from "@/components/ui/8bit/badge";
+import Layout from "@/layouts/main.astro";
+
+export async function getStaticPaths() {
+	const profiles = await getCollection("profiles");
+	return profiles.map((profile) => ({
+		params: { slug: profile.id },
+		props: { profile },
+	}));
+}
+
+const { profile } = Astro.props;
+const { Content } = await render(profile);
+const { name, lore, image, tags, category, stats } = profile.data;
+const imageSrc = `/images/profiles/${image}`;
+
+const content = {
+	title: `${name} - Chattinisona`,
+};
+---
+
+<Layout {content}>
+	<main class="min-h-screen bg-gradient-to-br from-primary/5 via-background to-accent/5">
+		<div class="container mx-auto px-4 py-12 max-w-5xl">
+			<a
+				href="/profiles"
+				class="inline-block mb-8 text-primary hover:text-primary/80 transition-colors"
+			>
+				← Back to Profiles
+			</a>
+
+			<div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+				<div class="md:col-span-1">
+					<Card>
+						<CardContent class="p-6">
+							<img
+								src={imageSrc}
+								alt={name}
+								class="pixel-art w-full h-auto rounded-lg mb-4"
+								loading="eager"
+							/>
+
+							<h1 class="retro text-2xl mb-4 text-center text-primary">
+								{name}
+							</h1>
+
+							{category && (
+								<div class="text-center mb-4">
+									<Badge variant="secondary">{category}</Badge>
+								</div>
+							)}
+
+							{stats && (
+								<div class="space-y-2 text-sm">
+									{stats.level && (
+										<p><strong>Level:</strong> {stats.level}</p>
+									)}
+									{stats.type && (
+										<p><strong>Type:</strong> {stats.type}</p>
+									)}
+								</div>
+							)}
+
+							{tags && tags.length > 0 && (
+								<div class="flex flex-wrap gap-2 mt-4">
+									{tags.map((tag) => (
+										<Badge variant="outline" class="text-xs">
+											{tag}
+										</Badge>
+									))}
+								</div>
+							)}
+						</CardContent>
+					</Card>
+				</div>
+
+				<div class="md:col-span-2">
+					<Card>
+						<CardHeader>
+							<CardTitle class="text-xl">About</CardTitle>
+						</CardHeader>
+						<CardContent>
+							<p class="text-muted-foreground mb-6">{lore}</p>
+
+							<div class="prose prose-sm max-w-none">
+								<Content />
+							</div>
+						</CardContent>
+					</Card>
+				</div>
+			</div>
+		</div>
+	</main>
+</Layout>
+
+<style>
+	.prose :global(h1),
+	.prose :global(h2),
+	.prose :global(h3) {
+		font-family: "Press Start 2P", cursive;
+		line-height: 1.6;
+		color: hsl(var(--primary));
+	}
+
+	.prose :global(h1) {
+		font-size: 1.5rem;
+		margin-top: 2rem;
+	}
+	.prose :global(h2) {
+		font-size: 1.25rem;
+		margin-top: 1.5rem;
+	}
+	.prose :global(h3) {
+		font-size: 1rem;
+		margin-top: 1rem;
+	}
+</style>

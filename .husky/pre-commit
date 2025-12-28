@@ -1,0 +1,8 @@
+#!/bin/sh
+set -e
+
+if [ -z "$(git diff --cached --name-only)" ]; then
+  exit 0
+fi
+
+pnpm dlx ultracite fix
