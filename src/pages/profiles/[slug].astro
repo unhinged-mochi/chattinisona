@@ -7,6 +7,8 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/8bit/card";
+import { Progress } from "@/components/ui/8bit/progress";
+import { Separator } from "@/components/ui/8bit/separator";
 import Layout from "@/layouts/main.astro";
 
 export async function getStaticPaths() {
@@ -29,71 +31,185 @@ const content = {
 
 <Layout {content}>
 	<main
-		class="min-h-screen bg-gradient-to-br from-primary/5 via-background to-accent/5"
+		class="min-h-screen bg-gradient-to-br from-primary/5 via-background to-accent/5 crt-scanlines"
+		transition:animate="slide"
 	>
-		<div class="container mx-auto px-4 py-12 max-w-5xl">
+		<div class="container mx-auto px-4 py-12 max-w-6xl">
+			{/* Retro back button */}
 			<a
 				href="/profiles"
-				class="inline-block mb-8 text-primary hover:text-primary/80 transition-colors"
+				class="inline-flex items-center gap-2 mb-8 px-4 py-2 border-2 border-foreground dark:border-ring bg-background hover:bg-primary hover:text-primary-foreground transition-all retro text-xs retro-shadow hover:shadow-lg"
+				data-astro-prefetch
 			>
-				← Back to Profiles
+				◄ BACK TO LIST
 			</a>
 
-			<div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-				<div class="md:col-span-1">
+			{/* Character sheet layout */}
+			<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+				{/* Left sidebar: Character portrait & quick stats */}
+				<div class="lg:col-span-1 space-y-6">
+					{/* Portrait card */}
+					<Card transition:name={`profile-${profile.id}`}>
+						<CardContent class="p-0">
+							<div class="relative">
+								{/* Character image */}
+								<img
+									src={imageSrc}
+									alt={name}
+									class="pixel-art w-full h-auto"
+									loading="eager"
+									transition:name={`profile-img-${profile.id}`}
+								>
+
+								{/* Name overlay */}
+								<div
+									class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-background/95 to-transparent p-4"
+								>
+									<h1 class="retro text-xl text-primary text-center mb-2">
+										{name}
+									</h1>
+									{category && (
+										<div class="text-center">
+											<Badge variant="secondary" className="text-xs">
+												{category}
+											</Badge>
+										</div>
+									)}
+								</div>
+							</div>
+						</CardContent>
+					</Card>
+
+					{/* Stats card - RPG style */}
+					{stats && (
 					<Card>
-						<CardContent class="p-6">
-							<img
-								src={imageSrc}
-								alt={name}
-								class="pixel-art w-full h-auto rounded-lg mb-4"
-								loading="eager"
-							>
+						<CardHeader>
+							<CardTitle className="text-base flex items-center gap-2">
+								<span class="text-accent">⚡</span>STATS
+							</CardTitle>
+						</CardHeader>
+						<CardContent class="space-y-4">
+							{stats.level && (
+									<Progress
+										value={stats.level}
+										max={100}
+										label="LEVEL"
+										variant="primary"
+									/>
+								)}
 
-							<h1 class="retro text-2xl mb-4 text-center text-primary">
-								{name}
-							</h1>
+							{stats.type && (
+									<div class="space-y-1">
+										<div class="text-xs retro text-muted-foreground">TYPE</div>
+										<div class="text-sm font-medium">{stats.type}</div>
+									</div>
+								)}
 
-							{category && (
-								<div class="text-center mb-4">
-									<Badge variant="secondary">{category}</Badge>
+							{/* Experience bar */}
+							<Progress
+								value={85}
+								max={100}
+								label="EXPERIENCE"
+								variant="accent"
+								showValue={false}
+							/>
+
+							<Separator decorative className="my-4"/>
+
+							<div class="grid grid-cols-2 gap-4 text-center text-xs retro">
+								<div>
+									<div class="text-2xl text-primary">{tags?.length || 0}</div>
+									<div class="text-muted-foreground mt-1">TRAITS</div>
 								</div>
-							)}
-
-							{stats && (
-								<div class="space-y-2 text-sm">
-									{stats.level && (
-										<p><strong>Level:</strong> {stats.level}</p>
-									)}
-									{stats.type && (
-										<p><strong>Type:</strong> {stats.type}</p>
-									)}
+								<div>
+									<div class="text-2xl text-accent">★</div>
+									<div class="text-muted-foreground mt-1">RANK</div>
 								</div>
-							)}
+							</div>
+						</CardContent>
+					</Card>
+					)}
 
-							{tags && tags.length > 0 && (
-								<div class="flex flex-wrap gap-2 mt-4">
-									{tags.map((tag) => (
-										<Badge variant="outline" class="text-xs">
+					{/* Tags card */}
+					{tags && tags.length > 0 && (
+					<Card>
+						<CardHeader>
+							<CardTitle className="text-base flex items-center gap-2">
+								<span class="text-primary">●</span>TRAITS
+							</CardTitle>
+						</CardHeader>
+						<CardContent>
+							<div class="flex flex-wrap gap-2">
+								{tags.map((tag) => (
+										<Badge variant="outline" className="text-xs">
 											{tag}
 										</Badge>
 									))}
-								</div>
-							)}
+							</div>
 						</CardContent>
 					</Card>
+					)}
 				</div>
 
-				<div class="md:col-span-2">
+				{/* Right content: Story & Details */}
+				<div class="lg:col-span-2 space-y-6">
+					{/* Lore/Bio card */}
 					<Card>
 						<CardHeader>
-							<CardTitle class="text-xl">About</CardTitle>
+							<CardTitle className="text-xl flex items-center gap-2">
+								<span class="text-accent">▼</span>PROFILE
+							</CardTitle>
+						</CardHeader>
+						<CardContent class="space-y-6">
+							{/* Short lore */}
+							<div class="p-4 bg-muted/50 border-l-4 border-primary">
+								<p class="text-muted-foreground leading-relaxed italic">
+									"{lore}"
+								</p>
+							</div>
+
+							<Separator decorative/>
+
+							{/* Detailed content */}
+							<div class="prose prose-sm dark:prose-invert max-w-none">
+								<Content/>
+							</div>
+						</CardContent>
+					</Card>
+
+					{/* Achievements card */}
+					<Card>
+						<CardHeader>
+							<CardTitle className="text-base flex items-center gap-2">
+								<span class="text-accent">★</span>ACHIEVEMENTS
+							</CardTitle>
 						</CardHeader>
 						<CardContent>
-							<p class="text-muted-foreground mb-6">{lore}</p>
-
-							<div class="prose prose-sm max-w-none">
-								<Content/>
+							<div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+								<div
+									class="text-center p-4 border border-border rounded hover:border-primary transition-colors"
+								>
+									<div class="text-3xl mb-2">🏆</div>
+									<div class="retro text-[10px] text-muted-foreground">
+										COMMUNITY HERO
+									</div>
+								</div>
+								<div
+									class="text-center p-4 border border-border rounded hover:border-accent transition-colors"
+								>
+									<div class="text-3xl mb-2">⭐</div>
+									<div class="retro text-[10px] text-muted-foreground">
+										FEATURED
+									</div>
+								</div>
+								<div
+									class="text-center p-4 border border-border rounded hover:border-primary transition-colors"
+								>
+									<div class="text-3xl mb-2">💎</div>
+									<div class="retro text-[10px] text-muted-foreground">
+										LEGEND
+									</div>
+								</div>
 							</div>
 						</CardContent>
 					</Card>
@@ -108,20 +224,39 @@ const content = {
 	.prose :global(h2),
 	.prose :global(h3) {
 		font-family: "Press Start 2P", cursive;
-		line-height: 1.6;
+		line-height: 1.8;
 		color: hsl(var(--primary));
+		margin-top: 2rem;
 	}
 
 	.prose :global(h1) {
 		font-size: 1.5rem;
-		margin-top: 2rem;
 	}
 	.prose :global(h2) {
 		font-size: 1.25rem;
-		margin-top: 1.5rem;
 	}
 	.prose :global(h3) {
 		font-size: 1rem;
-		margin-top: 1rem;
+	}
+
+	.prose :global(p) {
+		line-height: 1.8;
+		margin-bottom: 1.5rem;
+	}
+
+	.prose :global(ul),
+	.prose :global(ol) {
+		padding-left: 1.5rem;
+		margin-bottom: 1.5rem;
+	}
+
+	.prose :global(li) {
+		margin-bottom: 0.5rem;
+		line-height: 1.6;
+	}
+
+	.prose :global(strong) {
+		color: hsl(var(--accent));
+		font-weight: 600;
 	}
 </style>

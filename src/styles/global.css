@@ -68,6 +68,74 @@
 		line-height: 1.6;
 		letter-spacing: 0.05em;
 	}
+
+	/* CRT Scanline effect */
+	.crt-scanlines {
+		position: relative;
+		overflow: hidden;
+	}
+
+	.crt-scanlines::before {
+		content: "";
+		position: absolute;
+		inset: 0;
+		background: linear-gradient(transparent 50%, rgba(0, 0, 0, 0.05) 50%);
+		background-size: 100% 4px;
+		pointer-events: none;
+		z-index: 1;
+	}
+
+	/* Retro border patterns */
+	.pixel-border-sm {
+		border-width: 2px;
+		border-style: solid;
+		border-image: repeating-linear-gradient(
+				90deg,
+				currentColor 0px,
+				currentColor 2px,
+				transparent 2px,
+				transparent 4px
+			)
+			2;
+	}
+
+	/* Animated pixel sparkle */
+	@keyframes pixel-pulse {
+		0%,
+		100% {
+			opacity: 1;
+			transform: scale(1);
+		}
+		50% {
+			opacity: 0.6;
+			transform: scale(1.2);
+		}
+	}
+
+	.pixel-pulse {
+		animation: pixel-pulse 2s ease-in-out infinite;
+	}
+
+	/* Retro shadow depth */
+	.retro-shadow {
+		box-shadow:
+			4px 4px 0px hsl(var(--foreground) / 0.2),
+			8px 8px 0px hsl(var(--foreground) / 0.1);
+	}
+
+	/* HP/XP bar animation */
+	@keyframes bar-fill {
+		from {
+			width: 0%;
+		}
+		to {
+			width: var(--bar-width);
+		}
+	}
+
+	.stat-bar {
+		animation: bar-fill 1s ease-out forwards;
+	}
 }
 
 @theme inline {

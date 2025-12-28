@@ -2,16 +2,20 @@
 import type { ProfileCardProps } from "./profile-card";
 import { ProfileCard as ProfileCardReact } from "./profile-card";
 
-interface Props extends Omit<ProfileCardProps, "imageElement"> {
+interface Props extends Omit<ProfileCardProps, "imageElement" | "level"> {
 	image?: string;
 	imageAlt?: string;
+	stats?: {
+		level?: number;
+		type?: string;
+	};
 }
 
-const { image = "chattino.jpeg", imageAlt, ...props } = Astro.props;
+const { image = "chattino.jpeg", imageAlt, stats, ...props } = Astro.props;
 const imageSrc = `/images/profiles/${image}`;
 ---
 
-<ProfileCardReact client:load {...props}>
+<ProfileCardReact client:load {...props} level={stats?.level}>
 	<img
 		slot="imageElement"
 		src={imageSrc}
