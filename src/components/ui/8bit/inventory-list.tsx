@@ -11,7 +11,9 @@ interface InventoryListProps {
 }
 
 export function InventoryList({ items }: InventoryListProps) {
-	if (!items || items.length === 0) return null;
+	if (!items || items.length === 0) {
+		return null;
+	}
 
 	return (
 		<ul className="space-y-2 text-lg">
