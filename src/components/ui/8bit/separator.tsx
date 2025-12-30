@@ -13,7 +13,7 @@ export function Separator({
 }: SeparatorProps) {
 	return (
 		<div
-			aria-orientation={orientation}
+			{...(!decorative && { "aria-orientation": orientation })}
 			className={cn(
 				"relative border-foreground dark:border-ring",
 				orientation === "horizontal"

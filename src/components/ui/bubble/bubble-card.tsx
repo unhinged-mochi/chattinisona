@@ -95,7 +95,9 @@ export default function BubbleCard({
 					<img
 						alt={profile.name}
 						className="pixelated h-full w-full object-cover"
+						height="200"
 						src={imageUrl}
+						width="200"
 					/>
 				</motion.div>
 

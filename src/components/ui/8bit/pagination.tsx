@@ -60,6 +60,7 @@ const ChevronLeftIcon = () => {
 			width="50"
 			xmlns="http://www.w3.org/2000/svg"
 		>
+			<title>Chevron Left</title>
 			<rect
 				height="14"
 				rx="1"
@@ -110,6 +111,7 @@ const ChevronRightIcon = () => {
 			width="50"
 			xmlns="http://www.w3.org/2000/svg"
 		>
+			<title>Chevron Right</title>
 			<rect height="14" rx="1" width="14" x="128" y="136" />
 			<rect height="14" rx="1" width="14" x="112" y="152" />
 			<rect height="14" rx="1" width="14" x="96" y="72" />

@@ -1,4 +1,8 @@
-import * as AvatarPrimitive from "@radix-ui/react-avatar";
+import {
+	Fallback as AvatarFallback,
+	Image as AvatarImage,
+	Root as AvatarRoot,
+} from "@radix-ui/react-avatar";
 import type * as React from "react";
 
 import { cn } from "@/lib/utils";
@@ -6,9 +10,9 @@ import { cn } from "@/lib/utils";
 function Avatar({
 	className,
 	...props
-}: React.ComponentProps<typeof AvatarPrimitive.Root>) {
+}: React.ComponentProps<typeof AvatarRoot>) {
 	return (
-		<AvatarPrimitive.Root
+		<AvatarRoot
 			className={cn(
 				"relative flex size-8 shrink-0 overflow-hidden rounded-full",
 				className
@@ -19,12 +23,12 @@ function Avatar({
 	);
 }
 
-function AvatarImage({
+function BitAvatarImage({
 	className,
 	...props
-}: React.ComponentProps<typeof AvatarPrimitive.Image>) {
+}: React.ComponentProps<typeof AvatarImage>) {
 	return (
-		<AvatarPrimitive.Image
+		<AvatarImage
 			className={cn("aspect-square size-full", className)}
 			data-slot="avatar-image"
 			{...props}
@@ -32,12 +36,12 @@ function AvatarImage({
 	);
 }
 
-function AvatarFallback({
+function BitAvatarFallback({
 	className,
 	...props
-}: React.ComponentProps<typeof AvatarPrimitive.Fallback>) {
+}: React.ComponentProps<typeof AvatarFallback>) {
 	return (
-		<AvatarPrimitive.Fallback
+		<AvatarFallback
 			className={cn(
 				"flex size-full items-center justify-center rounded-full bg-muted",
 				className
@@ -48,4 +52,8 @@ function AvatarFallback({
 	);
 }
 
-export { Avatar, AvatarImage, AvatarFallback };
+export {
+	Avatar,
+	BitAvatarImage as AvatarImage,
+	BitAvatarFallback as AvatarFallback,
+};

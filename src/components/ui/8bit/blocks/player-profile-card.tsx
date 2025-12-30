@@ -161,13 +161,13 @@ export default function PlayerProfileCard({
 				{/* Custom Stats */}
 				{customStats.length > 0 && (
 					<div className="space-y-2">
-						{customStats.map((stat, index) => {
+						{customStats.map((stat) => {
 							const percentage = stat.max
 								? Math.round((stat.value / stat.max) * 100)
 								: 0;
 
 							return (
-								<div className="space-y-1" key={index}>
+								<div className="space-y-1" key={stat.label}>
 									<div className="flex items-center justify-between">
 										<span className="font-medium text-sm">{stat.label}</span>
 										<span className="retro text-[9px] text-muted-foreground sm:text-xs">
